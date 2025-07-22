@@ -10,20 +10,16 @@
     fontElement.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap';
     document.head.appendChild(fontElement);
 
-    // Widget styles
+    // Widget styles (use your existing CSS here)
     const widgetStyles = document.createElement('style');
     widgetStyles.textContent = `
-        /* ... [all your CSS styles remain unchanged] ... */
-        /* You can keep your full style block here, as previously set */
+      /* [Paste your full CSS from your current widgetStyles.textContent here] */
     `;
     document.head.appendChild(widgetStyles);
 
     // Default configuration
     const defaultSettings = {
-        webhook: {
-            url: '',
-            route: ''
-        },
+        webhook: { url: '', route: '' },
         branding: {
             logo: '',
             name: '',
@@ -45,18 +41,17 @@
     };
 
     // Merge user settings with defaults
-    const settings = window.ChatWidgetConfig ? 
-        {
-            webhook: { ...defaultSettings.webhook, ...window.ChatWidgetConfig.webhook },
-            branding: { ...defaultSettings.branding, ...window.ChatWidgetConfig.branding },
-            style: { 
-                ...defaultSettings.style, 
-                ...window.ChatWidgetConfig.style,
-                primaryColor: window.ChatWidgetConfig.style?.primaryColor === '#854fff' ? '#10b981' : (window.ChatWidgetConfig.style?.primaryColor || '#10b981'),
-                secondaryColor: window.ChatWidgetConfig.style?.secondaryColor === '#6b3fd4' ? '#059669' : (window.ChatWidgetConfig.style?.secondaryColor || '#059669')
-            },
-            suggestedQuestions: window.ChatWidgetConfig.suggestedQuestions || defaultSettings.suggestedQuestions
-        } : defaultSettings;
+    const settings = window.ChatWidgetConfig ? {
+        webhook: { ...defaultSettings.webhook, ...window.ChatWidgetConfig.webhook },
+        branding: { ...defaultSettings.branding, ...window.ChatWidgetConfig.branding },
+        style: { 
+            ...defaultSettings.style, 
+            ...window.ChatWidgetConfig.style,
+            primaryColor: window.ChatWidgetConfig.style?.primaryColor === '#854fff' ? '#10b981' : (window.ChatWidgetConfig.style?.primaryColor || '#10b981'),
+            secondaryColor: window.ChatWidgetConfig.style?.secondaryColor === '#6b3fd4' ? '#059669' : (window.ChatWidgetConfig.style?.secondaryColor || '#059669')
+        },
+        suggestedQuestions: window.ChatWidgetConfig.suggestedQuestions || defaultSettings.suggestedQuestions
+    } : defaultSettings;
 
     // Session tracking
     let conversationId = '';
@@ -75,7 +70,7 @@
     const chatWindow = document.createElement('div');
     chatWindow.className = `chat-window ${settings.style.position === 'left' ? 'left-side' : 'right-side'}`;
     
-    // Welcome + Chat HTML (no registration form)
+    // Welcome + Chat HTML (registration form REMOVED)
     const welcomeScreenHTML = `
         <div class="chat-header">
             <img class="chat-header-logo" src="${settings.branding.logo}" alt="${settings.branding.name}">
@@ -230,6 +225,8 @@
     startChatButton.addEventListener('click', () => {
         chatWelcome.style.display = 'none';
         chatBody.classList.add('active');
+        // Optionally show suggested questions here
+        displaySuggestedQuestions();
     });
 
     sendButton.addEventListener('click', () => {
@@ -265,7 +262,7 @@
         });
     });
 
-    // Optionally, display suggested questions after chat starts
+    // Suggested Questions
     function displaySuggestedQuestions() {
         if (
             settings.suggestedQuestions &&
@@ -291,8 +288,4 @@
             messagesContainer.appendChild(suggestedQuestionsContainer);
         }
     }
-
-    // Show suggested questions after entering chat
-    startChatButton.addEventListener('click', displaySuggestedQuestions);
-
 })();
