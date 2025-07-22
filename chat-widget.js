@@ -943,31 +943,35 @@
     }
 
     // Event listeners
-    startChatButton.addEventListener('click', showRegistrationForm);
-    registrationForm.addEventListener('submit', handleRegistration);
-    
-    sendButton.addEventListener('click', () => {
+    startChatButton.addEventListener('click', () => {
+    // Hide the welcome screen and go straight to the chat interface
+    chatWelcome.style.display = 'none';
+    chatBody.classList.add('active');
+});
+
+sendButton.addEventListener('click', () => {
+    const messageText = messageTextarea.value.trim();
+    if (messageText && !isWaitingForResponse) {
+        submitMessage(messageText);
+        messageTextarea.value = '';
+        messageTextarea.style.height = 'auto';
+    }
+});
+
+messageTextarea.addEventListener('input', autoResizeTextarea);
+
+messageTextarea.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
         const messageText = messageTextarea.value.trim();
         if (messageText && !isWaitingForResponse) {
             submitMessage(messageText);
             messageTextarea.value = '';
             messageTextarea.style.height = 'auto';
         }
-    });
-    
-    messageTextarea.addEventListener('input', autoResizeTextarea);
-    
-    messageTextarea.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            const messageText = messageTextarea.value.trim();
-            if (messageText && !isWaitingForResponse) {
-                submitMessage(messageText);
-                messageTextarea.value = '';
-                messageTextarea.style.height = 'auto';
-            }
-        }
-    });
+    }
+});
+
     
     launchButton.addEventListener('click', () => {
         chatWindow.classList.toggle('visible');
